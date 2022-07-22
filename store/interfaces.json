@@ -1,0 +1,6 @@
+{
+  "timebanner": {
+    "component": "TimeBanner",
+    "composition": "children"
+  }
+}

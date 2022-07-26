@@ -1,0 +1,52 @@
+.timeBannerContainer {}
+
+.timeBannerWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.timeBanner {
+    display: flex;
+    position: relative;
+}
+
+.image {
+    width: 100%;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    margin: 1rem;
+}
+
+.titleText {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 0.25rem 0.75rem;
+    margin: 0;
+}
+
+.subTitleText {
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.85);
+    margin: 0;
+    padding: 0.25rem 0.75rem;
+}
+
+.actionText {
+    color: white;
+    background-color: #ec1d24;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 1rem;
+    margin: 0.25rem;
+    text-align: center;
+    width: fit-content;
+}

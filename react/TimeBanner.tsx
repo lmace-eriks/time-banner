@@ -1,5 +1,4 @@
 import React, { ReactChildren, useEffect, useState } from "react";
-// import { canUseDOM } from "vtex.render-runtime";
 import { formatTextPosition } from "./utils";
 
 // Styles
@@ -9,12 +8,15 @@ interface TimeBannerProps {
   startDate: string
   endDate: string
   imgSrc: string
+  mobileImgSrc: string
+  alt: string
   title: string
   subTitle: string
   callToAction: string
   link: string
   newTab: boolean
   textPos: TextPosEnum
+  mobileTextPos: TextPosEnum
   children: ReactChildren
 }
 
@@ -30,8 +32,7 @@ enum TextPosEnum {
   bottomRight = "bottomRight"
 }
 
-const TimeBanner: StorefrontFunctionComponent<TimeBannerProps> = ({ children, startDate, endDate, imgSrc, textPos, title, subTitle, link, newTab, callToAction }) => {
-  // const [openGate, setOpenGate] = useState<Boolean>(true);
+const TimeBanner: StorefrontFunctionComponent<TimeBannerProps> = ({ children, startDate, endDate, imgSrc, mobileImgSrc, alt, textPos, mobileTextPos, title, subTitle, link, newTab, callToAction }) => {
   const [showBanner, setShowBanner] = useState<Boolean>(false);
 
   const hasChildren: Boolean = !!React.Children.toArray(children).length;
@@ -39,9 +40,6 @@ const TimeBanner: StorefrontFunctionComponent<TimeBannerProps> = ({ children, st
   const defaultCallToAction = "Learn More";
 
   useEffect(() => {
-    // if (!openGate) return;
-    // setOpenGate(false);
-
     const nowMS = Date.now();
     const startDateMS = Date.parse(startDate);
     const endDateMS = Date.parse(endDate) + penultimateMillisecond;
@@ -62,10 +60,18 @@ const TimeBanner: StorefrontFunctionComponent<TimeBannerProps> = ({ children, st
     setShowBanner(true);
   })
 
+  const imageOrPicture = !!mobileImgSrc ?
+    <picture>
+      <source media="(min-width:1026px)" srcSet={imgSrc} />
+      <source media="(max-width:1025px)" srcSet={mobileImgSrc} />
+      <img src={imgSrc} alt={alt ? alt : ""} loading="lazy" />
+    </picture> :
+    <img src={imgSrc} alt={alt ? alt : ""} loading="lazy" />
+
   const defaultContent =
     <a href={link} target={newTab ? "_blank" : "_self"} rel="noreferrer">
-      <div style={formatTextPosition(textPos)} className={styles.timeBanner}>
-        <img src={imgSrc} alt={title} className={styles.image} />
+      <div style={formatTextPosition(textPos, mobileTextPos)} className={styles.timeBanner}>
+        {imageOrPicture}
         <div className={styles.textContainer}>
           {title && <p className={styles.titleText}>{title}</p>}
           {subTitle && <p className={styles.subTitleText}>{subTitle}</p>}
@@ -86,6 +92,8 @@ const TimeBanner: StorefrontFunctionComponent<TimeBannerProps> = ({ children, st
     return (<></>)
   }
 }
+
+const textPosArray = ["top", "bottom", "left", "right", "center", "topLeft", "topRight", "bottomLeft", "bottomRight"];
 
 TimeBanner.schema = {
   title: "Time Banner",
@@ -108,21 +116,25 @@ TimeBanner.schema = {
     textPos: {
       title: "Text Position",
       description: "Where the text and renders over the image.",
-      enum: ["top",
-        "bottom",
-        "left",
-        "right",
-        "center",
-        "topLeft",
-        "topRight",
-        "bottomLeft",
-        "bottomRight"],
+      enum: textPosArray,
+      default: "center",
+      type: "string"
+    },
+    mobileTextPos: {
+      title: "Mobile Text Position",
+      description: "Where the text and renders over the image.",
+      enum: textPosArray,
       default: "center",
       type: "string"
     },
     imgSrc: {
       title: "Image Source",
       description: "REQUIRED | Absolute path to image.",
+      type: "string"
+    },
+    mobileImgSrc: {
+      title: "Mobile Image Source",
+      description: "Strongly Suggested | Absolute path to image.",
       type: "string"
     },
     link: {

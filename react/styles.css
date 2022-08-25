@@ -43,10 +43,17 @@
 .actionText {
     color: white;
     background-color: #ec1d24;
+    border: 2px solid white;
     font-size: 1rem;
     font-weight: bold;
     padding: 1rem;
     margin: 0.25rem;
     text-align: center;
     width: fit-content;
+}
+
+.actionText:hover {
+    color: black;
+    background-color: white;
+    border: 2px solid #ec1d24;
 }
